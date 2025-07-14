@@ -21,6 +21,7 @@ This pipeline processes **harmonized GWAS summary statistics** (restricted to **
 ```bash
 git clone https://github.com/ape4fld/nf-genetic-correlations.git
 cd nf-genetic-correlations
+```
 
 ### 2. Inputs Required
 
@@ -35,7 +36,9 @@ variant_id, effect_allele, other_allele, beta, standard_error, p_value
 > ⚠️ `variant_id` must be rsIDs. This pipeline is optimized for harmonized summary stats from the [GWAS Catalog](https://www.ebi.ac.uk/gwas/).
 
 - Store your files in:
+```bash
 /genetic_correlations/data/sumstats/
+```
 
 #### 📝 b) Metadata File
 
@@ -52,6 +55,7 @@ Create a single file named `metadata.txt`, tab-separated, with the following col
 - Store the metadata file at:
  ```bash
 /genetic_correlations/data/
+```
 
 #### 📦 c) LD Reference Files
 
@@ -61,10 +65,12 @@ Create a single file named `metadata.txt`, tab-separated, with the following col
  ```bash
  wget https://data.broadinstitute.org/alkesgroup/LDSCORE/eur_w_ld_chr.tar.bz2
  tar -xvjf eur_w_ld_chr.tar.bz2
+```
 
 Place contents in:
  ```bash
 /genetic_correlations/data/ld_reference/eur_w_ld_chr/
+```
 
 2. **1000 Genomes Reference (for LAVA)**
 Download European PLINK reference files as described in the LAVA reference guide
@@ -72,6 +78,7 @@ Download European PLINK reference files as described in the LAVA reference guide
 Place contents in:
  ```bash
 /genetic_correlations/data/ld_reference/g1000_eur/
+```
 
 ### 3. ⚙️ Nextflow Configuration
 
@@ -88,3 +95,4 @@ You will need to **edit the provided `nextflow.config`** file to match your setu
   Change  
   ```nextflow
   process.clusterOptions = '--account=def-xxxxx'
+  ```
