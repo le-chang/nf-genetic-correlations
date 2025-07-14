@@ -34,11 +34,9 @@ c) LD reference files
    i) LD scores for LDSC: wget https://data.broadinstitute.org/alkesgroup/LDSCORE/eur_w_ld_chr.tar.bz2
    
       Note: uncompressed and stored in /genetic_correlations/data/ld_reference/ (need to have a directory within named 'eur_w_ld_chr')
-      
    ii) 1000 Genomes reference genotype data for LAVA (in PLINK format; select 'European'): https://github.com/josefin-werme/LAVA/blob/main/REFERENCE.md
    
       Note: uncompressed and stored in /genetic_correlations/data/ld_reference/ (need to have a directory within named 'g1000_eur')
-
 **3. nextflow config file:**
 This config file is customed to be run at Alliance Canada in Béluga.
 The user will need to modify:
