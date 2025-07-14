@@ -23,7 +23,17 @@ git clone https://github.com/ape4fld/nf-genetic-correlations.git
 cd nf-genetic-correlations
 ```
 
-### 2. Inputs Required
+### 2. Dependencies
+
+Some R packages need to be pre-installed in R version 4.3.1:
+
+- Tidyverse: dplyr, tidyr, stringr, readr
+- Others: here, data.table
+- LAVA (```R via remotes::install_github()```)
+
+  
+
+### 3. Inputs Required
 
 ---
 
@@ -80,7 +90,7 @@ Place contents in:
 /genetic_correlations/data/ld_reference/g1000_eur/
 ```
 
-### 3. ⚙️ Nextflow Configuration
+### 4. ⚙️ Nextflow Configuration
 
 ---
 
