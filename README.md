@@ -31,7 +31,15 @@ Some R packages need to be pre-installed in R version 4.3.1:
 - Others: here, data.table
 - LAVA (```R via remotes::install_github()```)
 
-  
+In Alliance Canada, you can follow these steps:
+
+```bash
+module load StdEnv/2023 r/4.3.1
+mkdir -p ~/.local/R/$EBVERSIONR/
+export R_LIBS=~/.local/R/$EBVERSIONR/
+R -e 'install.packages(c("dplyr", "tidyr", "stringr", "readr", "here", "data.table"), repos="https://cloud.r-project.org/")'
+R -e 'remotes::install_github("josefin-werme/LAVA")'
+```
 
 ### 3. Inputs Required
 
