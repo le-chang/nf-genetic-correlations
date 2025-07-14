@@ -1,46 +1,103 @@
-# nf-genetic-correlations
-Nextflow pipeline to perform genetic correlations with GWAS summary statistics (LDSC and LAVA)
+🧬 nf-genetic-correlations
+Nextflow pipeline for global and regional genetic correlations using GWAS summary statistics
+Supports LDSC for genome-wide correlations and LAVA for local (regional) genetic correlations.
 
-This Nextflow pipeline receives as input GWAS summary statistics (at least two datasets - restricted to EUR genetic ancestry, for now) and processes them to compute global genetic correlations using LDSC (https://github.com/bulik/ldsc) and regional genetic correlations using LAVA (https://github.com/josefin-werme/LAVA).
+📖 Overview
+This pipeline processes harmonized GWAS summary statistics (restricted to European ancestry for now) and computes:
 
------------------------------------------------------------
-DOCUMENTATION
------------------------------------------------------------
+Global genetic correlations using LDSC
 
-**1. Install**
-<git clone ape4fld/nf-genetic-correlations>
+Local genetic correlations using LAVA
 
-**2. Inputs needed from user:**
-   
-a) GWAS summary statistics files 
-  - In text format (e.g. .tsv, .csv, .txt, etc.)
-  - Required columns present (in any order, but with exact same column name): "variant_id", "effect_allele", "other_allele", "beta", "standard_error", "p_value"
+🚀 Getting Started
+1. Install
+bash
+Copy
+Edit
+git clone https://github.com/ape4fld/nf-genetic-correlations.git
+cd nf-genetic-correlations
+2. Inputs Required
+📁 a) GWAS Summary Statistics
+Accepted formats: .tsv, .csv, .txt, etc.
 
-    Note: variant_id are expected to be rsIDs; optimized for harmonized summary statistics downloaded from the GWAS catalog (https://www.ebi.ac.uk/gwas/).
-  -  Other columns can be present and they will be ignored.
-  -  Stored in /genetic_correlations/data/sumstats/
+Required columns (names must match exactly, but order can vary):
 
-b) Metadata file
-  - One file named 'metadata.txt' with the following column names (tab separated):
-    "dataset", "filename", "N", "cases", "controls"
-  - dataset = a short name for each dataset
-  - filename = file name for each GWAS summary statistics file
-  - N = total sample size; if it varies per variant one can use the max. N
-  - Cases = number of cases (if continuous trait, set to NA)
-  - Controls = number of controls (if continuous trait, set to NA)
-  - Stored in /genetic_correlations/data/
+matlab
+Copy
+Edit
+variant_id, effect_allele, other_allele, beta, standard_error, p_value
+⚠️ variant_id must be rsIDs. This pipeline is optimized for harmonized summary stats from the GWAS Catalog.
 
-c) LD reference files
-   i) LD scores for LDSC: wget https://data.broadinstitute.org/alkesgroup/LDSCORE/eur_w_ld_chr.tar.bz2
-      Note: uncompressed and stored in /genetic_correlations/data/ld_reference/ (need to have a directory within named 'eur_w_ld_chr')
-   ii) 1000 Genomes reference genotype data for LAVA (in PLINK format; select 'European'): https://github.com/josefin-werme/LAVA/blob/main/REFERENCE.md
-      Note: uncompressed and stored in /genetic_correlations/data/ld_reference/ (need to have a directory within named 'g1000_eur')
-      
-**3. nextflow config file:**
-This config file is customed to be run at Alliance Canada in Béluga.
-The user will need to modify:
-- the parameters set up in the config file included here ('nextflow.config') to match the paths to their files.
-- the apptainer path to the LDSC .sif image.
-- the paths to the directories mounted to run apptainer.
-- the Alliance Canada user ID (within process: clusterOptions = '--account=def-xxxxx')
+Store files under:
 
+swift
+Copy
+Edit
+/genetic_correlations/data/sumstats/
+📝 b) Metadata File
+A single file named metadata.txt, tab-separated, with the following columns:
+
+Column	Description
+dataset	Short name for each dataset
+filename	File name of the GWAS summary statistics file
+N	Total sample size (use max if per-variant varies)
+cases	Number of cases (use NA for continuous traits)
+controls	Number of controls (use NA for continuous traits)
+
+Store this file at:
+
+bash
+Copy
+Edit
+/genetic_correlations/data/
+📦 c) LD Reference Files
+LD Scores (for LDSC)
+Download and extract:
+
+bash
+Copy
+Edit
+wget https://data.broadinstitute.org/alkesgroup/LDSCORE/eur_w_ld_chr.tar.bz2
+tar -xvjf eur_w_ld_chr.tar.bz2
+Place in:
+
+swift
+Copy
+Edit
+/genetic_correlations/data/ld_reference/eur_w_ld_chr/
+1000 Genomes (for LAVA)
+Download PLINK files for European population as described in the LAVA reference guide
+
+Place in:
+
+swift
+Copy
+Edit
+/genetic_correlations/data/ld_reference/g1000_eur/
+3. ⚙️ Nextflow Configuration
+This pipeline is configured to run on Alliance Canada’s Béluga cluster.
+You will need to customize the provided nextflow.config:
+
+Update the paths to your data files and directories.
+
+Set the Apptainer image path for LDSC (e.g., .sif file).
+
+Modify mounted directory paths for Apptainer.
+
+Replace --account=def-xxxxx with your Alliance Canada user ID.
+
+📂 Directory Structure
+bash
+Copy
+Edit
+nf-genetic-correlations/
+├── main.nf
+├── nextflow.config
+├── data/
+│   ├── sumstats/          # Input GWAS summary statistics
+│   ├── metadata.txt       # Metadata file
+│   └── ld_reference/
+│       ├── eur_w_ld_chr/  # LD scores for LDSC
+│       └── g1000_eur/     # 1000 Genomes data for LAVA
+├── results/               # Output directory (after run)
+└── README.md
