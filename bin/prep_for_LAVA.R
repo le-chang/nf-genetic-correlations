@@ -100,11 +100,11 @@ for (k in 1:length(phenotypes)){
         gcov_int <- 1
       } else {
         subset <- dplyr::filter(all_rg, p1 == i, p2 == j)
-        if (nrow(subset > 0)) {
+        if (nrow(subset) > 0) {
           gcov_int <- dplyr::filter(all_rg, p1 == i, p2 == j) %>% .[["gcov_int"]]
         } else {
           subset <- dplyr::filter(all_rg, p1 == j, p2 == i)
-          if (nrow(subset > 0)) {
+          if (nrow(subset) > 0) {
           gcov_int <- dplyr::filter(all_rg, p1 == j, p2 == i) %>% .[["gcov_int"]]
         } else {
           cat("Error when filling in covariance matrix with LDSC outputs for traits", i, " and ", j, ".\n")
@@ -141,14 +141,14 @@ write.table(
   quote = F,
   row.names = phenotypes,
   sep = "\t"
+)
 
 write.table(
   rg_out,
   file = "all_rg_results.tsv",
   quote = F,
   row.names = F,
-  sep = "\t")
-
+  sep = "\t"
 )
 
 
