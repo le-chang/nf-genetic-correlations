@@ -82,6 +82,7 @@ Create a single file named `metadata.txt`, tab-separated, with the following col
  ```bash
 /genetic_correlations/data/
 ```
+**Note:** an example of 'metadata.txt' is included, which can be edited.
 
 #### 📦 c) LD Reference Files
 
