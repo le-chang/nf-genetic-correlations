@@ -215,13 +215,14 @@ workflow {
     .collect()
     .map { it[0] }
 
-    lava_input = all_rg_results_ch
+    lava_input_ch = all_rg_results_ch
         .combine(rg_dir_ch)
         .map { results, rg_dir -> rg_dir }
-        | PrepLAVA
+
+    prep_lava = PrepLAVA(lava_input_ch)
 
     // Step 7: Run LAVA
-    lava_data_ch = lava_input
+    lava_data_ch = prep_lava.data_files
         .collect()
         .map { _ -> file("${params.data_dir}/LAVA") }
 
