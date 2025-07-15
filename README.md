@@ -98,11 +98,26 @@ Place contents in:
 /genetic_correlations/data/ld_reference/g1000_eur/
 ```
 
-### 4. ⚙️ Nextflow Configuration
+### 4. 📦 LDSC Apptainer/Singularity Image
 
 ---
 
-This pipeline is configured to run on **Alliance Canada’s Béluga cluster**, but can be adapted to other HPC environments.
+Download the LDSC container image from Zenodo:
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15920751.svg)](https://doi.org/10.5281/zenodo.15920751)
+
+```bash
+# Download the image (1.2GB)
+wget https://zenodo.org/records/15920751/files/ldsc_latest.sif
+# Place it in the bin/ directory
+mv ldsc_latest.sif bin/
+```
+
+### 5. ⚙️ Nextflow Configuration
+
+---
+
+This pipeline is configured to run on **Alliance Canada's Béluga cluster**, but can be adapted to other HPC environments.
 
 You will need to **edit the provided `nextflow.config`** file to match your setup:
 
