@@ -125,18 +125,21 @@ mv ldsc_latest.sif bin/
 
 ---
 
-This pipeline is configured to run on **Alliance Canada's Béluga cluster**, but can be adapted to other HPC environments.
+The pipeline uses **relative paths** by default, making it portable across different systems. The configuration is set up for **Alliance Canada clusters** but can be adapted for other environments.
 
-You will need to **edit the provided `nextflow.config`** file to match your setup:
+#### Minimal Configuration Required:
 
-- 🔧 **Update parameters** to match paths to your input and reference files.
-- 📦 **Set the path to the Apptainer image** (`.sif`) used to run LDSC.
-- 📁 **Define the directories** that will be mounted into the Apptainer container.
-- 🧑‍💻 **Replace your user account string** in the SLURM options:  
-  Change  
-  ```nextflow
-  process.clusterOptions = '--account=def-xxxxx'
-  ```
+1. **For Alliance Canada users**, update the SLURM account:
+```nextflow
+process.clusterOptions = '--account=def-xxxxx'  // Replace with your allocation
+```
+
+2. **For other HPC/local systems**, you may need to:
+- Change the `executor` from 'slurm' to your system (e.g., 'local', 'sge', 'pbs')
+- Adjust resource allocations (memory, CPUs, time)
+
+#### Default Directory Structure:
+The pipeline expects this structure relative to where your `main_full.nf` file is located.
 
 ---
 
