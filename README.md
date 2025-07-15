@@ -151,7 +151,6 @@ Once you've completed the setup and configuration, you can run the pipeline:
 
 1. **Edit the SLURM script** (`run_nextflow.sh`):
    - Replace `def-xxxxx` with your compute allocation
-   - Update file paths to match your directory structure
 
 2. **Submit the job**:
    ```bash
