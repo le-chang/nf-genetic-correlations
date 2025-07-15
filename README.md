@@ -56,7 +56,7 @@ R -e 'remotes::install_github("josefin-werme/LAVA")'
 #### 📁 a) GWAS Summary Statistics
 
 - Accepted formats: `.tsv`, `.csv`, `.txt`, etc.
-- Required columns (**names must match exactly**, order can vary):
+- Required columns (**names must match exactly**, order can vary and other columns will be ignored):
 variant_id, effect_allele, other_allele, beta, standard_error, p_value
 
 > ⚠️ `variant_id` must be rsIDs. This pipeline is optimized for harmonized summary stats from the [GWAS Catalog](https://www.ebi.ac.uk/gwas/).
