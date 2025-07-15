@@ -12,6 +12,14 @@ This pipeline processes **harmonized GWAS summary statistics** (restricted to **
 - **Global genetic correlations** using [LDSC](https://github.com/bulik/ldsc)  
 - **Local genetic correlations** using [LAVA](https://github.com/josefin-werme/LAVA)
 
+It will also compute the SNP-based heritability for each of the GWAS summary statistics. For LAVA, it will perform the univariate test for each trait across all loci, and will compute the local genetic correlations (i.e., bivariate test) for pairs of traits which univariate test is significant (0.05/number of loci tested).
+
+There are several advantages of using the pipeline:
+1) Given that it uses an LDSC .sif image, there is no need to load old python versions to run LDSC.
+2) The pipeline formats and adapts the GWAS summary statistics for each tool.
+3) The user does not need to prepare additional files to run LAVA.
+4) It is reproducible and the user can easily re-run the analysis by adding/removing GWAS datasets.
+
 ---
 
 ## 🚀 Getting Started
@@ -159,3 +167,35 @@ The pipeline will:
 - Calculate global genetic correlations using LDSC
 - Calculate local genetic correlations using LAVA
 - Output results to the `results/` directory
+
+---
+
+## 📊 Expected Outputs
+
+The pipeline generates results in the following directory structure:
+
+```
+results/
+├── formatted/                 # Formatted summary statistics
+│   └── formatted_*.tsv        # One file per GWAS dataset
+├── munged/                    # LDSC-ready files
+│   └── *.sumstats.gz         # Munged summary statistics
+├── ldsc_h2/                   # Heritability estimates
+│   └── *.h2_results          # SNP-heritability for each trait
+├── ldsc_rg/                   # Global genetic correlations
+│   ├── *.rg_results          # Pairwise genetic correlations
+│   └── all_rg_results.tsv    # Combined results table
+└── lava/                      # Local genetic correlations
+    ├── univ_*.rds            # Univariate test results per trait
+    └── bivar_*.rds           # Bivariate test results for trait pairs
+
+data/LAVA/                     # LAVA input files
+├── info_file.txt             # Trait information
+└── sample_overlap.txt        # Sample overlap matrix
+```
+
+### Key Output Files:
+
+- **`all_rg_results.tsv`**: Summary table with all global genetic correlations (rg), standard errors, p-values, and heritability estimates
+- **`univ_*.rds`**: Local heritability and association p-values for each genomic locus per trait
+- **`bivar_*.rds`**: Local genetic correlations between trait pairs at specific loci where both traits show significant univariate signals
