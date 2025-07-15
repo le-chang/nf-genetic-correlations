@@ -19,4 +19,6 @@ export NXF_DISABLE_CHECK_LATEST=true
 # for login node: export NXF_DISABLE_CHECK_LATEST=true
 # ulimit -v 40000000
 
+mkdir -p /home/fridald4/projects/def-xxxx/fridald4/genetic_correlations/results
+
 nextflow run /home/fridald4/projects/def-xxxx/fridald4/genetic_correlations/main_full.nf -profile beluga -resume
