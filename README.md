@@ -138,6 +138,20 @@ process.clusterOptions = '--account=def-xxxxx'  // Replace with your allocation
 - Change the `executor` from 'slurm' to your system (e.g., 'local', 'sge', 'pbs')
 - Adjust resource allocations (memory, CPUs, time)
 
+#### ⏱️ Time Considerations for LAVA:
+
+The LAVA process is currently set to 23 hours, which works well for 3-5 datasets. However, **running time increases significantly** with more datasets due to pairwise comparisons:
+- 3 datasets = 3 pairs
+- 5 datasets = 10 pairs  
+- 10 datasets = 45 pairs
+
+To adjust the time limit, modify in `nextflow.config`:
+```nextflow
+withLabel: lava {
+    time = "47h"  // Increase for larger analyses
+}
+```
+
 #### Default Directory Structure:
 The pipeline expects this structure relative to where your `main_full.nf` file is located.
 
