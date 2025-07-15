@@ -16,9 +16,8 @@ export R_LIBS=~/.local/R/4.3.1/
 
 export NXF_DISABLE_REMOTE_WORKFLOW=true
 export NXF_DISABLE_CHECK_LATEST=true
-# for login node: export NXF_DISABLE_CHECK_LATEST=true
-# ulimit -v 40000000
 
-mkdir -p /home/fridald4/projects/def-xxxx/fridald4/genetic_correlations/results
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+mkdir -p "${SCRIPT_DIR}/results"
 
-nextflow run /home/fridald4/projects/def-xxxx/fridald4/genetic_correlations/main_full.nf -profile beluga -resume
+nextflow run "${SCRIPT_DIR}/main_full.nf" -profile beluga -resume

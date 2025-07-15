@@ -142,8 +142,8 @@ process PrepLAVA {
     path("*.txt"), emit: data_files
     path("all_rg_results.tsv"), emit: rg_all_results
 
-    publishDir "${params.data_dir}/LAVA", mode: 'copy', pattern = "*.txt"
-    publishDir "${params.output_dir}/ldsc_rg", mode: 'copy', pattern = "all_rg_results*.tsv"
+    publishDir "${params.data_dir}/LAVA", mode: 'copy', pattern: "*.txt"
+    publishDir "${params.output_dir}/ldsc_rg", mode: 'copy', pattern: "all_rg_results*.tsv"
 
 script:
     """
