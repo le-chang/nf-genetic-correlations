@@ -128,11 +128,6 @@ for (k in 1:length(phenotypes)){
   
 }
 
-rg_out <- all_rg %>%
-  left_join(., metadata %>% dplyr::select(p1_dataset_name = dataset, filename), by = c("p1" = "filename")) %>%
-  left_join(., metadata %>% dplyr::select(p2_dataset_name = dataset, filename), by = c("p2" = "filename")) %>%
-  dplyr::select(p1_dataset_name, p1, p2_dataset_name, p2, rg, se, z, p, h2_obs, h2_obs_se, h2_int, h2_int_se, gcov_int, gcov_int_se)
-
 # Save data ---------------------------------------------------------------
 
 write.table(
@@ -144,7 +139,7 @@ write.table(
 )
 
 write.table(
-  rg_out,
+  all_rg,
   file = "all_rg_results.tsv",
   quote = F,
   row.names = F,
