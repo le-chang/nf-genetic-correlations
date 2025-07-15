@@ -129,3 +129,33 @@ You will need to **edit the provided `nextflow.config`** file to match your setu
   ```nextflow
   process.clusterOptions = '--account=def-xxxxx'
   ```
+
+---
+
+## 🚀 Running the Pipeline
+
+Once you've completed the setup and configuration, you can run the pipeline:
+
+### For Alliance Canada/Béluga Users:
+
+1. **Edit the SLURM script** (`run_nextflow.sh`):
+   - Replace `def-xxxxx` with your compute allocation
+   - Update file paths to match your directory structure
+
+2. **Submit the job**:
+   ```bash
+   sbatch run_nextflow.sh
+   ```
+
+### For Other HPC/Local Systems:
+
+Run Nextflow directly:
+```bash
+nextflow run main_full.nf -profile <your_profile> -resume
+```
+
+The pipeline will:
+- Process your GWAS summary statistics
+- Calculate global genetic correlations using LDSC
+- Calculate local genetic correlations using LAVA
+- Output results to the `results/` directory
