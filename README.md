@@ -185,7 +185,7 @@ results/
 ├── ldsc_rg/                   # Global genetic correlations
 │   ├── *.rg_results          # Pairwise genetic correlations
 │   └── all_rg_results.tsv    # Combined results table
-└── lava/                      # Local genetic correlations
+└── LAVA/                      # Local genetic correlations
     ├── univ_*.rds            # Univariate test results per trait
     └── bivar_*.rds           # Bivariate test results for trait pairs
 
