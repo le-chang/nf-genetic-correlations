@@ -17,7 +17,9 @@ export R_LIBS=~/.local/R/4.3.1/
 export NXF_DISABLE_REMOTE_WORKFLOW=true
 export NXF_DISABLE_CHECK_LATEST=true
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-mkdir -p "${SCRIPT_DIR}/results"
+# Use SLURM_SUBMIT_DIR which contains the directory where sbatch was called
+WORK_DIR="${SLURM_SUBMIT_DIR}"
 
-nextflow run "${SCRIPT_DIR}/main_full.nf" -profile beluga -resume
+# Run nextflow from the submission directory
+cd "${WORK_DIR}"
+nextflow run main_full.nf -profile beluga -resume
