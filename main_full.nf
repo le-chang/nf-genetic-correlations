@@ -224,7 +224,7 @@ workflow {
     // Step 7: Run LAVA
     lava_data_ch = prep_lava.data_files
         .collect()
-        .map { _ -> file("${params.data_dir}/LAVA") }
+        .map { _ -> "${params.data_dir}/LAVA" }
 
     lava_data_ch | RunLAVA
 }
