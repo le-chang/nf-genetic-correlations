@@ -85,48 +85,51 @@ phenotypes <- c(all_rg$p1, all_rg$p2) %>% unique()
 ###### Creating sample overlap matrix by extracting the intercept from LDSC results ######
 
 n <- length(phenotypes)
-covar_matrix <- matrix(NA,n,n)
+covar_matrix <- matrix(NA, n, n)
 
 rownames(covar_matrix) <- colnames(covar_matrix) <- phenotypes
 
-for (k in 1:length(phenotypes)){
-  
-  for(i in phenotypes) {
-    for(j in phenotypes) {
-
-      cat("Getting genetic covariance intercept for", i, "and", j, ".\n")
-
-      if (i == j) {
-        gcov_int <- 1
+# FIX: Remove the unnecessary outer k loop
+for(i in phenotypes) {
+  for(j in phenotypes) {
+    
+    cat("Getting genetic covariance intercept for", i, "and", j, ".\n")
+    
+    if (i == j) {
+      gcov_int <- 1
+    } else {
+      subset <- dplyr::filter(all_rg, p1 == i, p2 == j)
+      if (nrow(subset) > 0) {
+        gcov_int <- subset[["gcov_int"]]
       } else {
-        subset <- dplyr::filter(all_rg, p1 == i, p2 == j)
+        subset <- dplyr::filter(all_rg, p1 == j, p2 == i)
         if (nrow(subset) > 0) {
-          gcov_int <- dplyr::filter(all_rg, p1 == i, p2 == j) %>% .[["gcov_int"]]
+          gcov_int <- subset[["gcov_int"]]
         } else {
-          subset <- dplyr::filter(all_rg, p1 == j, p2 == i)
-          if (nrow(subset) > 0) {
-          gcov_int <- dplyr::filter(all_rg, p1 == j, p2 == i) %>% .[["gcov_int"]]
-        } else {
-          cat("Error when filling in covariance matrix with LDSC outputs for traits", i, " and ", j, ".\n")
+          cat("Warning: No LDSC output found for traits", i, "and", j, ". Setting to NA.\n")
+          gcov_int <- NA
           next
-          }
         }
       }
-
-      covar_matrix[i,j] <-
-        gcov_int   
-         
-      cat("Done.\n")
     }
+    
+    covar_matrix[i,j] <- gcov_int   
+    cat("Done.\n")
   }
-  
-  # Standardise the matrix
-  covar_matrix <-
-    covar_matrix %>%
-    cov2cor() %>%
-    round(digits = 5)
-  
 }
+
+# Standardise the matrix (moved outside the loop)
+# Check for NA values before standardization
+if(any(is.na(covar_matrix))) {
+  warning("Covariance matrix contains NA values. These will be handled in standardization.")
+  # Option 1: Replace NA with 0 for missing correlations
+  covar_matrix[is.na(covar_matrix)] <- 0
+}
+
+covar_matrix <-
+  covar_matrix %>%
+  cov2cor() %>%
+  round(digits = 5)
 
 # Save data ---------------------------------------------------------------
 
@@ -134,7 +137,8 @@ write.table(
   covar_matrix,
   file = "sample_overlap.txt",
   quote = F,
-  row.names = phenotypes,
+  row.names = TRUE,  # Changed to TRUE to preserve row names
+  col.names = NA,     # This ensures proper format with row names
   sep = "\t"
 )
 
@@ -145,5 +149,3 @@ write.table(
   row.names = F,
   sep = "\t"
 )
-
-
