@@ -2,6 +2,7 @@
 
 **Nextflow pipeline for global and regional genetic correlations using GWAS summary statistics**  
 Supports **LDSC** for genome-wide correlations and **LAVA** for local (regional) genetic correlations.
+(forked from [ape4fld/nf-genetic-correlations](ape4fld/nf-genetic-correlations))
 
 ---
 
@@ -21,7 +22,7 @@ It will also compute the SNP-based heritability for each of the GWAS summary sta
 ### 1. Install
 
 ```bash
-git clone https://github.com/ape4fld/nf-genetic-correlations.git
+git clone https://github.com/le-chang/nf-genetic-correlations.git
 cd nf-genetic-correlations
 ```
 
