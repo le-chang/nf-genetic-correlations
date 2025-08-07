@@ -11,7 +11,7 @@ munged_dir <- as.character(args[2])
 
 # Read munged files -----------------------------------------------------------
 
-munged_list <- list.files(stringr::str_c(munged_path), pattern = "*.sumstats.gz", full.names = TRUE)
+munged_list <- list.files(munged_path, pattern = "*.sumstats.gz", full.names = FALSE)
 
 # Get all pairwise combinations
 pairwise_combos <- combn(munged_list, 2)
@@ -23,10 +23,10 @@ pairwise_df <- data.frame(
 )
 
 df_out <- pairwise_df %>%
-    mutate(file1 = stringr::str_c(munged_dir, "/", file1v1),
-           suffix1 = stringr::str_remove(basename(file1), ".sumstats.gz"),
-           file2 = stringr::str_c(munged_dir, "/", file2v1),
-           suffix2 = stringr::str_remove(basename(file2), ".sumstats.gz")) %>%
+    mutate(file1 = file.path(munged_dir, file1v1),
+           suffix1 = stringr::str_remove(basename(file1v1), ".sumstats.gz"),
+           file2 = file.path(munged_dir, file2v1),
+           suffix2 = stringr::str_remove(basename(file2v1), ".sumstats.gz")) %>%
     dplyr::select(file1, suffix1, file2, suffix2)
 
 write.table(df_out, "pairs_to_test.tsv", sep = "\t", row.names = F, quote = F, col.names = T)
