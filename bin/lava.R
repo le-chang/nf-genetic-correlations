@@ -2,7 +2,6 @@
 
 # Load packages -----------------------------------------------------------
 
-library(here)
 library(LAVA)
 library(dplyr)
 library(tidyr)
@@ -19,7 +18,8 @@ lava_data_dir = as.character(args[3])
 # -----------------------------------------------------------
 # Get array of phenotypes:
 
-info <- read.table(here("data", lava_data_dir, "info_file.txt"), sep = "\t", header = TRUE)
+# Read info file from the current directory (where files were copied)
+info <- read.table(file.path(lava_data_dir, "info_file.txt"), sep = "\t", header = TRUE)
 phenotypes <- info$phenotype
 
 # -----------------------------------------------------------
@@ -30,10 +30,10 @@ args <-
   list(
     ref_prefix = ref_ld,
     loc_file = loci_file,
-    info_file = here("data", lava_data_dir, "info_file.txt"),
-    sample_overlap_file = here("data", lava_data_dir, "sample_overlap.txt"),
+    info_file = file.path(lava_data_dir, "info_file.txt"),
+    sample_overlap_file = file.path(lava_data_dir, "sample_overlap.txt"),
     phenotypes = phenotypes,
-    output_filename = str_c("local_rg_", str_c(phenotypes, collapse = ":"))
+    output_filename = str_c("local_rg_", str_c(phenotypes, collapse = "_"))
   )
 
 # Load data ---------------------------------------------------------------
@@ -126,4 +126,4 @@ saveRDS(
   file = file.path(str_c(args$output_filename, ".bivar.lava.rds"))
 )
 
-cat("LAVA analysis done!")
+cat("LAVA analysis done!\n")
