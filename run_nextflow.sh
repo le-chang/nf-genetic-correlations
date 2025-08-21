@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --account=def-xxxxx
+#SBATCH --account=def-gsarah
 #SBATCH --job-name=nextflow_run
 #SBATCH --output=slurm-%x.out
 #SBATCH --error=slurm-%x.err
