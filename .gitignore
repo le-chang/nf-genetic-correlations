@@ -1,2 +1,7 @@
 bin/ldsc_latest.sif
 data/
+.nextflow/
+work/
+*.err
+*.out
+*log*
