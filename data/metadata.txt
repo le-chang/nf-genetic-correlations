@@ -1,7 +1,7 @@
 dataset	filename	N	cases	controls
-AD_wightman2021	AD_wightman2021.txt	1126563
+AD_wightman2021_formatted	AD_wightman2021_formatted.txt	1126563
 	90338	1036225
-AD_kunkle2019	AD_kunkle2019.txt	94437	35247	59163
-uacr_sex_combined	uacr_sex_combined.tsv	122972	NA	NA
-uacr_female	uacr_female.tsv	59199	NA	NA
-uacr_male	uacr_male.tsv	63773	NA	NA
+AD_kunkle2019_formatted	AD_kunkle2019_formatted.txt	94437	35247	59163
+uacr_sex_combined_formatted	uacr_sex_combined_formatted.tsv	122972	NA	NA
+uacr_female_formatted	uacr_female_formatted.tsv	59199	NA	NA
+uacr_male_formatted	uacr_male_formatted.tsv	63773	NA	NA
