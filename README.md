@@ -57,7 +57,7 @@ R -e 'remotes::install_github("josefin-werme/LAVA")'
 
 - Accepted formats: `.tsv`, `.csv`, `.txt`, etc.
 - Required columns (**names must match exactly**, order can vary and other columns will be ignored):
-variant_id, effect_allele, other_allele, beta, standard_error, p_value
+variant_id, effect_allele, other_allele, beta, standard_error, p_value, N
 
 > ⚠️ `variant_id` must be rsIDs. This pipeline is optimized for harmonized summary stats from the [GWAS Catalog](https://www.ebi.ac.uk/gwas/).
 
@@ -99,13 +99,22 @@ Place contents in:
 /genetic_correlations/data/ld_reference/eur_w_ld_chr/
 ```
 
-2. **1000 Genomes Reference (for LAVA)**
+2. **1000 Genomes Reference or UK Biobank reference (for LAVA)**
 Download European PLINK reference files as described in the LAVA reference guide
 
-Place contents in:
+or
+
+Download UK Biobank reference files as described in the LAVA reference guide
+
+Place 1000 Genomes Reference contents in:
  ```bash
 /genetic_correlations/data/ld_reference/g1000_eur/
 ```
+Place UK Biobank reference contents in:
+ ```bash
+/genetic_correlations/data/ld_reference/ukb_eur/
+```
+Note: You'll need to modify the nextflow.config to adapt the **ref_ld_chr** path defined, according to the reference for LAVA you choose to use.
 
 ### 4. 📦 LDSC Apptainer/Singularity Image
 
