@@ -1,32 +1,36 @@
 nextflow.enable.dsl=2
 
-def metadata_file = file(params.data_dir).resolve('metadata.txt')
-def sampleSizeMap = metadata_file
-    .readLines()
-    .drop(1)
-    .collectEntries { line ->
-        def row = line.split('\t')
-        [row[1], row[2] as Integer]
-    }
+// Run identifier - use this to namespace outputs when running different datasets
+// Usage: nextflow run main_full.nf --run_id my_analysis --metadata path/to/metadata.txt --lava-ref UKB
+params.run_id = params.run_id ?: ''
+run_id = params.run_id
 
+// Metadata file - can be overridden per run
+metadata_file = params.metadata ? file(params.metadata) : file(params.data_dir).resolve('metadata.txt')
+
+// LAVA reference panel (options: --lava_ref UKB or 1KGP_EUR, default: UKB)
+params.lava_ref = params.lava_ref ?: 'UKB'
+
+if (params.lava_ref == 'UKB') {
+    ref_ld_chr = "${params.data_dir}/ld_reference/ukb_eur/lava-ukb-v1.1"
+} else if (params.lava_ref == '1KGP_EUR') {
+    ref_ld_chr = "${params.data_dir}/ld_reference/g1000_eur/g1000_eur"
+} else {
+    error "Invalid lava_ref value: ${params.lava_ref}. Must be 'UKB' or '1KGP_EUR'"
+}
+
+// Build channel from metadata file - only processes files listed in metadata
 Channel
-    .fromPath("${params.data_dir}/sumstats/*")
-    .map { file ->
-        def sampleN = sampleSizeMap[file.getName()]
-        if (sampleN == null)
-            throw new RuntimeException("No sample size found for file: ${file.getName()}")
-
-        // def suffixName = file.getName().replaceAll(/\.tsv\.gz$/, '')
-        def suffixName = file.getBaseName(file.name.endsWith('.gz')? 2: 1)
-
-        tuple(file, sampleN, suffixName)
+    .from(metadata_file.readLines().drop(1))  // skip header before creating channel
+    .map { line ->
+        def row = line.split('\t')
+        def filename = row[1]
+        def sampleN = row[2] as Integer
+        def filepath = file("${params.data_dir}/sumstats/${filename}")
+        def suffixName = filepath.getBaseName(filename.endsWith('.gz') ? 2 : 1)
+        tuple(filepath, sampleN, suffixName)
     }
     .set { raw_sumstats_with_N }
-
-// Create channel of munged sumstats directory
-Channel
-    .value(file("${params.output_dir}/munged"))
-    .set { munged_dir_ch }
 
 // Create channel of LDSC rg results directory
 Channel
@@ -96,18 +100,20 @@ process RunLDSC_h2 {
 
 process PrepRg {
     input:
-    path munged
+    val ready  // signal that munging is complete
+    val run_id
 
     output:
-    path("pairs_to_test.tsv")
+    path("*pairs_to_test.tsv")
 
     publishDir "${params.output_dir}/ldsc_rg", mode: 'copy'
 
     script:
     """
     Rscript ${params.bin_dir}/prep_pairs_for_rg.R \
-        ${munged} \
-        ${params.output_dir}
+        ${metadata_file} \
+        ${params.output_dir}/munged \
+        ${run_id}
     """
 }
 
@@ -137,29 +143,32 @@ process PrepLAVA {
 
     input:
     path rg_dir
+    val run_id
 
     output:
     path("*.txt"), emit: data_files
-    path("all_rg_results.tsv"), emit: rg_all_results
+    path("*_all_rg_results.tsv"), emit: rg_all_results
 
     publishDir "${params.data_dir}/LAVA", mode: 'copy', pattern: "*.txt"
-    publishDir "${params.output_dir}/ldsc_rg", mode: 'copy', pattern: "all_rg_results*.tsv"
+    publishDir "${params.output_dir}/ldsc_rg", mode: 'copy', pattern: "*_all_rg_results.tsv"
 
 script:
     """
     Rscript ${params.bin_dir}/prep_for_LAVA.R \
         ${metadata_file} \
         ${params.output_dir}/formatted \
-        ${rg_dir}
+        ${rg_dir} \
+        ${run_id}
     """
 
 }
 
-process RunLAVA {
+process RunLAVA_1 {
     label 'lava'
 
     input:
     path lava_data_dir
+    val run_id
 
     output:
     path("*.rds")
@@ -167,14 +176,230 @@ process RunLAVA {
     publishDir "${params.output_dir}/LAVA", mode: 'copy'
 
     script:
-    // params.ref_ld_chr = LD reference plink files
-    // loc = locus file for LAVA
-    // info and sample overlap files
     """
-        Rscript ${params.bin_dir}/lava.R \
-            ${params.ref_ld_chr} \
+        Rscript ${params.bin_dir}/lava_1.R \
+            ${ref_ld_chr} \
             ${params.locus_file} \
-            ${lava_data_dir}
+            ${lava_data_dir} \
+            ${run_id}
+    """
+}
+
+process RunLAVA_2 {
+    label 'lava'
+
+    input:
+    path lava_data_dir
+    val run_id
+
+    output:
+    path("*.rds")
+
+    publishDir "${params.output_dir}/LAVA", mode: 'copy'
+
+    script:
+    """
+        Rscript ${params.bin_dir}/lava_2.R \
+            ${ref_ld_chr} \
+            ${params.locus_file} \
+            ${lava_data_dir} \
+            ${run_id}
+    """
+}
+
+process RunLAVA_3 {
+    label 'lava'
+
+    input:
+    path lava_data_dir
+    val run_id
+
+    output:
+    path("*.rds")
+
+    publishDir "${params.output_dir}/LAVA", mode: 'copy'
+
+    script:
+    """
+        Rscript ${params.bin_dir}/lava_3.R \
+            ${ref_ld_chr} \
+            ${params.locus_file} \
+            ${lava_data_dir} \
+            ${run_id}
+    """
+}
+
+process RunLAVA_4 {
+    label 'lava'
+
+    input:
+    path lava_data_dir
+    val run_id
+
+    output:
+    path("*.rds")
+
+    publishDir "${params.output_dir}/LAVA", mode: 'copy'
+
+    script:
+    """
+        Rscript ${params.bin_dir}/lava_4.R \
+            ${ref_ld_chr} \
+            ${params.locus_file} \
+            ${lava_data_dir} \
+            ${run_id}
+    """
+}
+
+process RunLAVA_5 {
+    label 'lava'
+
+    input:
+    path lava_data_dir
+    val run_id
+
+    output:
+    path("*.rds")
+
+    publishDir "${params.output_dir}/LAVA", mode: 'copy'
+
+    script:
+    """
+        Rscript ${params.bin_dir}/lava_5.R \
+            ${ref_ld_chr} \
+            ${params.locus_file} \
+            ${lava_data_dir} \
+            ${run_id}
+    """
+}
+
+process RunLAVA_6 {
+    label 'lava'
+
+    input:
+    path lava_data_dir
+    val run_id
+
+    output:
+    path("*.rds")
+
+    publishDir "${params.output_dir}/LAVA", mode: 'copy'
+
+    script:
+    """
+        Rscript ${params.bin_dir}/lava_6.R \
+            ${ref_ld_chr} \
+            ${params.locus_file} \
+            ${lava_data_dir} \
+            ${run_id}
+    """
+}
+
+process RunLAVA_7 {
+    label 'lava'
+
+    input:
+    path lava_data_dir
+    val run_id
+
+    output:
+    path("*.rds")
+
+    publishDir "${params.output_dir}/LAVA", mode: 'copy'
+
+    script:
+    """
+        Rscript ${params.bin_dir}/lava_7.R \
+            ${ref_ld_chr} \
+            ${params.locus_file} \
+            ${lava_data_dir} \
+            ${run_id}
+    """
+}
+
+process RunLAVA_8 {
+    label 'lava'
+
+    input:
+    path lava_data_dir
+    val run_id
+
+    output:
+    path("*.rds")
+
+    publishDir "${params.output_dir}/LAVA", mode: 'copy'
+
+    script:
+    """
+        Rscript ${params.bin_dir}/lava_8.R \
+            ${ref_ld_chr} \
+            ${params.locus_file} \
+            ${lava_data_dir} \
+            ${run_id}
+    """
+}
+
+process RunLAVA_9 {
+    label 'lava'
+
+    input:
+    path lava_data_dir
+    val run_id
+
+    output:
+    path("*.rds")
+
+    publishDir "${params.output_dir}/LAVA", mode: 'copy'
+
+    script:
+    """
+        Rscript ${params.bin_dir}/lava_9.R \
+            ${ref_ld_chr} \
+            ${params.locus_file} \
+            ${lava_data_dir} \
+            ${run_id}
+    """
+}
+
+process RunLAVA_10 {
+    label 'lava'
+
+    input:
+    path lava_data_dir
+    val run_id
+
+    output:
+    path("*.rds")
+
+    publishDir "${params.output_dir}/LAVA", mode: 'copy'
+
+    script:
+    """
+        Rscript ${params.bin_dir}/lava_10.R \
+            ${ref_ld_chr} \
+            ${params.locus_file} \
+            ${lava_data_dir} \
+            ${run_id}
+    """
+}
+
+process MergeLAVA {
+
+    input:
+    path lava_rds_files
+    val run_id
+
+    output:
+    path("*.rds")
+    path("*.tsv")
+
+    publishDir "${params.output_dir}/LAVA", mode: 'copy'
+
+    script:
+    """
+        Rscript ${params.bin_dir}/merge_lava_results.R \
+            ${params.output_dir}/LAVA \
+            ${run_id}
     """
 }
 
@@ -190,14 +415,10 @@ workflow {
     munged_sumstats | RunLDSC_h2
 
     // Step 4. Prepare pairs of traits for RunLDSC_rg
-    all_munged_files_ch = munged_sumstats
-        .collect()
-        .map { it[0] }  // extract only the file paths
+    // Wait for munging to complete, then generate pairs from metadata
+    munging_done = munged_sumstats.collect().map { true }
 
-    pairs_test = all_munged_files_ch
-        .combine(munged_dir_ch)
-        .map { munged_files, munged_dir -> munged_dir }
-        | PrepRg
+    pairs_test = PrepRg(munging_done, run_id)
 
     // Step 5: Run LDSC rg
     pairs_ch = pairs_test
@@ -219,12 +440,29 @@ workflow {
         .combine(rg_dir_ch)
         .map { results, rg_dir -> rg_dir }
 
-    prep_lava = PrepLAVA(lava_input_ch)
+    prep_lava = PrepLAVA(lava_input_ch, run_id)
 
-    // Step 7: Run LAVA
+    // Step 7: Run LAVA (10 partitions in parallel)
     lava_data_ch = prep_lava.data_files
         .collect()
-        .map { _ -> "${params.data_dir}/LAVA" }
+        .map { files -> "${params.data_dir}/LAVA" }
 
-    lava_data_ch | RunLAVA
+    lava_1_out = RunLAVA_1(lava_data_ch, run_id)
+    lava_2_out = RunLAVA_2(lava_data_ch, run_id)
+    lava_3_out = RunLAVA_3(lava_data_ch, run_id)
+    lava_4_out = RunLAVA_4(lava_data_ch, run_id)
+    lava_5_out = RunLAVA_5(lava_data_ch, run_id)
+    lava_6_out = RunLAVA_6(lava_data_ch, run_id)
+    lava_7_out = RunLAVA_7(lava_data_ch, run_id)
+    lava_8_out = RunLAVA_8(lava_data_ch, run_id)
+    lava_9_out = RunLAVA_9(lava_data_ch, run_id)
+    lava_10_out = RunLAVA_10(lava_data_ch, run_id)
+
+    // Step 8: Merge LAVA results from all partitions
+    all_lava_outputs = lava_1_out
+        .mix(lava_2_out, lava_3_out, lava_4_out, lava_5_out,
+             lava_6_out, lava_7_out, lava_8_out, lava_9_out, lava_10_out)
+        .collect()
+
+    MergeLAVA(all_lava_outputs, run_id)
 }
