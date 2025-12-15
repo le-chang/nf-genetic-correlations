@@ -83,7 +83,7 @@ Create a single file named `metadata.txt`, tab-separated, with the following col
  ```bash
 /genetic_correlations/data/
 ```
-**Note:** an example of 'metadata.txt' is included, which can be edited. Additionally, if the user wants to run the analysis across a subset of the GWAS datasets, it is possible to do so by creating a new metadata file including only those datasets (and specify the file name with the --metadata flag - see  ```bash run_nextflow.sh```).
+**Note:** an example of 'metadata.txt' is included, which can be edited. Additionally, if the user wants to run the analysis across a subset of the GWAS datasets, it is possible to do so by creating a new metadata file including only those datasets (and specify the file name with the --metadata flag - see  ```run_nextflow.sh```).
 
 #### 📦 c) LD Reference Files
 
