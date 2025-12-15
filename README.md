@@ -173,6 +173,7 @@ Once you've completed the setup and configuration, you can run the pipeline:
 1. **Edit the SLURM script** (`run_nextflow.sh`):
    - Replace `def-xxxxx` with your compute allocation
    - Options in nextflow:
+     
    | Option     | Description                                      |
    |------------|--------------------------------------------------|
    | --run_id   | Give the specific run a prefix (optional)        |
@@ -190,7 +191,7 @@ Once you've completed the setup and configuration, you can run the pipeline:
 
 Run Nextflow directly:
 ```bash
-nextflow run main_full.nf -profile <your_profile> -resume
+nextflow run main_full.nf -profile <your_profile> -resume \
      --run_id analysis1 \
      --metadata ./data/metadata.txt \
      --lava_ref 'UKB'
@@ -220,8 +221,8 @@ results/
 │   ├── *.rg_results           # Pairwise genetic correlations
 │   └── all_rg_results.tsv     # Combined results table
 └── LAVA/                      # Local genetic correlations
-    ├── *univ.lava.tsv         # Univariate test results (one line per trait)
-    └── *bivar.lava.tsv        # Bivariate test results (one line per trait pair)
+    ├── *univ.lava.tsv         # Univariate test results (one line per trait) - also writes an .rds file
+    └── *bivar.lava.tsv        # Bivariate test results (one line per trait pair) - also writes an .rds file
 
 data/LAVA/                     # LAVA input files
 ├── info_file.txt              # Trait information
