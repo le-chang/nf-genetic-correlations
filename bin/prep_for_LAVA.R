@@ -16,6 +16,10 @@ args <- commandArgs(TRUE)
 metadata_file <- as.character(args[1]) # metadata path
 formatted_dir <- as.character(args[2]) # directory for formatted summary statistics
 ldsc_rg <- as.character(args[3]) # results dir from LDSC rg
+run_id <- as.character(args[4]) # run identifier for output file prefixes
+
+# Set output file prefix based on run_id (adds underscore separator automatically)
+file_prefix <- ifelse(run_id == "" || is.na(run_id), "", paste0(run_id, "_"))
 
 # -----------------------------------------------------------
 # -----------------------------------------------------------
@@ -27,7 +31,7 @@ info <- metadata %>%
   mutate(suffix = stringr::str_remove(filename, ".gz$") %>% stringr::str_remove(., ".[:alpha:]+$"),
         formatted_path = stringr::str_c(formatted_dir, "/formatted_", suffix, ".tsv")) %>%
   dplyr::select(phenotype = suffix, cases, controls, filename = formatted_path)
-write.table(info, "info_file.txt", sep = "\t", row.names = F, quote = F)
+write.table(info, paste0(file_prefix, "info_file.txt"), sep = "\t", row.names = F, quote = F)
 
 # -----------------------------------------------------------
 # -----------------------------------------------------------
@@ -132,7 +136,7 @@ for (k in 1:length(phenotypes)){
 
 write.table(
   covar_matrix,
-  file = "sample_overlap.txt",
+  file = paste0(file_prefix, "sample_overlap.txt"),
   quote = F,
   row.names = phenotypes,
   sep = "\t"
@@ -140,7 +144,7 @@ write.table(
 
 write.table(
   all_rg,
-  file = "all_rg_results.tsv",
+  file = paste0(file_prefix, "all_rg_results.tsv"),
   quote = F,
   row.names = F,
   sep = "\t"

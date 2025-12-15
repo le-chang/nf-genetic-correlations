@@ -6,27 +6,35 @@ library(stringr)
 
 # Arguments -----------------------------------------------------------
 args <- commandArgs(TRUE)
-munged_path <- as.character(args[1])
+metadata_file <- as.character(args[1])
 munged_dir <- as.character(args[2])
+run_id <- as.character(args[3]) # run identifier for output file prefix
 
-# Read munged files -----------------------------------------------------------
+# Set output file prefix based on run_id
+file_prefix <- ifelse(run_id == "" || is.na(run_id), "", paste0(run_id, "_"))
 
-munged_list <- list.files(stringr::str_c(munged_path), pattern = "*.sumstats.gz", full.names = TRUE)
+# Read metadata and derive suffixes -------------------------------------------
 
-# Get all pairwise combinations
-pairwise_combos <- combn(munged_list, 2)
+metadata <- read.table(metadata_file, sep = "\t", header = TRUE)
 
-# Convert to data frame with one trait per column
-pairwise_df <- data.frame(
-    file1v1 = pairwise_combos[1, ],
-    file2v1 = pairwise_combos[2, ]
-)
+# Derive suffix from filename (same logic as in main pipeline)
+suffixes <- metadata$filename %>%
+    stringr::str_remove(".gz$") %>%
+    stringr::str_remove(".[:alpha:]+$")
 
-df_out <- pairwise_df %>%
-    mutate(file1 = stringr::str_c(munged_dir, "/", file1v1),
-           suffix1 = stringr::str_remove(basename(file1), ".sumstats.gz"),
-           file2 = stringr::str_c(munged_dir, "/", file2v1),
-           suffix2 = stringr::str_remove(basename(file2), ".sumstats.gz")) %>%
+# Get all pairwise combinations of suffixes
+pairwise_combos <- combn(suffixes, 2)
+
+# Convert to data frame with file paths and suffixes
+df_out <- data.frame(
+    suffix1 = pairwise_combos[1, ],
+    suffix2 = pairwise_combos[2, ]
+) %>%
+    mutate(
+        file1 = stringr::str_c(munged_dir, "/", suffix1, ".sumstats.gz"),
+        file2 = stringr::str_c(munged_dir, "/", suffix2, ".sumstats.gz")
+    ) %>%
     dplyr::select(file1, suffix1, file2, suffix2)
 
-write.table(df_out, "pairs_to_test.tsv", sep = "\t", row.names = F, quote = F, col.names = T)
+write.table(df_out, paste0(file_prefix, "pairs_to_test.tsv"),
+            sep = "\t", row.names = F, quote = F, col.names = T)
