@@ -17,8 +17,9 @@ It will also compute the SNP-based heritability for each of the GWAS summary sta
 There are several advantages of using the pipeline:
 1) Given that it uses an LDSC .sif image, there is no need to load old python versions to run LDSC.
 2) The pipeline formats and adapts the GWAS summary statistics for each tool.
-3) The user does not need to prepare additional files to run LAVA.
-4) It is reproducible and the user can easily re-run the analysis by adding/removing GWAS datasets.
+3) The user does not need to prepare additional files to run LAVA (e.g., sample overlap file or info file).
+4) It partitions LAVA loci so that they run in parallel, which significantly reduces the running time.
+5) It is reproducible and the user can easily re-run the analysis by adding/removing GWAS datasets from the metadata file.
 
 ---
 
@@ -82,7 +83,7 @@ Create a single file named `metadata.txt`, tab-separated, with the following col
  ```bash
 /genetic_correlations/data/
 ```
-**Note:** an example of 'metadata.txt' is included, which can be edited.
+**Note:** an example of 'metadata.txt' is included, which can be edited. Additionally, if the user wants to run the analysis across a subset of the GWAS datasets, it is possible to do so by creating a new metadata file including only those datasets (and specify the file name with the --metadata flag - see  ```bash run_nextflow.sh```).
 
 #### 📦 c) LD Reference Files
 
@@ -100,7 +101,7 @@ Place contents in:
 ```
 
 2. **1000 Genomes Reference or UK Biobank reference (for LAVA)**
-Download European PLINK reference files as described in the LAVA reference guide or download UK Biobank reference files as described in the LAVA reference guide.
+Download European PLINK reference files as described in the LAVA reference guide or download UK Biobank reference files as described in the LAVA reference guide. Note that LAVA developers highly recommend to use the UK Biobank reference file.
 
 Place 1000 Genomes Reference contents in:
  ```bash
@@ -110,7 +111,7 @@ Place UK Biobank reference contents in:
  ```bash
 /genetic_correlations/data/ld_reference/ukb_eur/
 ```
-Note: You'll need to modify the nextflow.config to adapt the **ref_ld_chr** path defined, according to the reference for LAVA you choose to use.
+Note: The default LD reference file that is used is the UK Biobank, but the user can specify the LD source with the --lava_ref flag (1KGP_EUR or UKB) - see ```bash run_nextflow.sh```).
 
 ### 4. 📦 LDSC Apptainer/Singularity Image
 
@@ -146,7 +147,7 @@ process.clusterOptions = '--account=def-xxxxx'  // Replace with your allocation
 
 #### ⏱️ Time Considerations for LAVA:
 
-The LAVA process is currently set to 23 hours, which works well for 3-5 datasets. However, **running time increases significantly** with more datasets due to pairwise comparisons:
+The LAVA process is currently set to 6 hours, which works well for 2-3 datasets. However, **running time increases significantly** with more datasets due to pairwise comparisons:
 - 3 datasets = 3 pairs
 - 5 datasets = 10 pairs  
 - 10 datasets = 45 pairs
@@ -154,7 +155,7 @@ The LAVA process is currently set to 23 hours, which works well for 3-5 datasets
 To adjust the time limit, modify in `nextflow.config`:
 ```nextflow
 withLabel: lava {
-    time = "47h"  // Increase for larger analyses
+    time = "23h"  // Increase for larger analyses
 }
 ```
 
@@ -171,6 +172,14 @@ Once you've completed the setup and configuration, you can run the pipeline:
 
 1. **Edit the SLURM script** (`run_nextflow.sh`):
    - Replace `def-xxxxx` with your compute allocation
+   - Options in nextflow:
+   | Option     | Description                                      |
+   |------------|--------------------------------------------------|
+   | --run_id   | Give the specific run a prefix (optional)        |
+   | --metadata | Provide a different name to the metadata file    |
+   |            | (optional - default: metadata.txt)               |
+   | --lava-ref | Speficy LD reference for LAVA                    |
+   |            | (optional; UKB or 1KGP_EUR - default: UKB)       |
 
 2. **Submit the job**:
    ```bash
@@ -182,6 +191,9 @@ Once you've completed the setup and configuration, you can run the pipeline:
 Run Nextflow directly:
 ```bash
 nextflow run main_full.nf -profile <your_profile> -resume
+     --run_id analysis1 \
+     --metadata ./data/metadata.txt \
+     --lava_ref 'UKB'
 ```
 
 The pipeline will:
@@ -201,23 +213,23 @@ results/
 ├── formatted/                 # Formatted summary statistics
 │   └── formatted_*.tsv        # One file per GWAS dataset
 ├── munged/                    # LDSC-ready files
-│   └── *.sumstats.gz         # Munged summary statistics
+│   └── *.sumstats.gz          # Munged summary statistics
 ├── ldsc_h2/                   # Heritability estimates
-│   └── *.h2_results          # SNP-heritability for each trait
+│   └── *.h2_results           # SNP-heritability for each trait
 ├── ldsc_rg/                   # Global genetic correlations
-│   ├── *.rg_results          # Pairwise genetic correlations
-│   └── all_rg_results.tsv    # Combined results table
+│   ├── *.rg_results           # Pairwise genetic correlations
+│   └── all_rg_results.tsv     # Combined results table
 └── LAVA/                      # Local genetic correlations
-    ├── univ_*.rds            # Univariate test results per trait
-    └── bivar_*.rds           # Bivariate test results for trait pairs
+    ├── *univ.lava.tsv         # Univariate test results (one line per trait)
+    └── *bivar.lava.tsv        # Bivariate test results (one line per trait pair)
 
 data/LAVA/                     # LAVA input files
-├── info_file.txt             # Trait information
-└── sample_overlap.txt        # Sample overlap matrix
+├── info_file.txt              # Trait information
+└── sample_overlap.txt         # Sample overlap matrix
 ```
 
 ### Key Output Files:
 
 - **`all_rg_results.tsv`**: Summary table with all global genetic correlations (rg), standard errors, p-values, and heritability estimates
-- **`univ_*.rds`**: Local heritability and association p-values for each genomic locus per trait
-- **`bivar_*.rds`**: Local genetic correlations between trait pairs at specific loci where both traits show significant univariate signals
+- **`local_rg_*_univ.lava.tsv`**: Local heritability and association p-values for each genomic locus per trait
+- **`local_rg_*_bivar.lava.tsv`**: Local genetic correlations between trait pairs at specific loci where both traits show significant univariate signals
