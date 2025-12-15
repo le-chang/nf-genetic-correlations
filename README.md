@@ -111,7 +111,7 @@ Place UK Biobank reference contents in:
  ```bash
 /genetic_correlations/data/ld_reference/ukb_eur/
 ```
-Note: The default LD reference file that is used is the UK Biobank, but the user can specify the LD source with the --lava_ref flag (1KGP_EUR or UKB) - see ```bash run_nextflow.sh```).
+Note: The default LD reference file that is used is the UK Biobank, but the user can specify the LD source with the --lava_ref flag (options: 1KGP_EUR or UKB) - see ```run_nextflow.sh```).
 
 ### 4. 📦 LDSC Apptainer/Singularity Image
 
