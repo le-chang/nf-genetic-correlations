@@ -172,13 +172,13 @@ Once you've completed the setup and configuration, you can run the pipeline:
 
 1. **Edit the SLURM script** (`run_nextflow.sh`):
    - Replace `def-xxxxx` with your compute allocation
-   - Options in nextflow:
+   - Options in Nextflow command (see ```run_nextflow.sh``` for an example):
      
    | Option     | Description                                      |
    |------------|--------------------------------------------------|
    | --run_id   | Give the specific run a prefix (optional)        |
-   | --metadata | Provide a different name to the metadata file \n (optional - default: metadata.txt) |
-   | --lava-ref | Speficy LD reference for LAVA \n (optional; UKB or 1KGP_EUR - default: UKB) |
+   | --metadata | Provide a different name to the metadata file (optional - default: metadata.txt) |
+   | --lava-ref | Speficy LD reference for LAVA (optional; UKB or 1KGP_EUR - default: UKB) |
 
 2. **Submit the job**:
    ```bash
