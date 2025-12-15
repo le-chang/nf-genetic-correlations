@@ -3,7 +3,7 @@
 #SBATCH --job-name=nextflow_run
 #SBATCH --output=slurm-%x.out
 #SBATCH --error=slurm-%x.err
-#SBATCH --time=47:59:59
+#SBATCH --time=12:00:00
 #SBATCH --mem=20G
 
 module load StdEnv/2023
@@ -22,4 +22,7 @@ WORK_DIR="${SLURM_SUBMIT_DIR}"
 
 # Run nextflow from the submission directory
 cd "${WORK_DIR}"
-nextflow run main_full.nf -profile beluga -resume
+nextflow run main.nf -profile beluga -resume \
+    --run_id analysis1 \
+    --metadata ${WORK_DIR}/data/metadata.txt \
+    --lava_ref 'UKB'
