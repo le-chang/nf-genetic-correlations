@@ -42,22 +42,54 @@ write.table(info, paste0(file_prefix, "info_file.txt"), sep = "\t", row.names = 
 file_paths <-
   list.files(
     ldsc_rg,
-    pattern = "*.rg_results",
+    pattern = "\\.log$",
     full.names = TRUE
   )
 
-files <-
-  vector(mode = "list",
-         length = length(file_paths))
-
-for(i in 1:length(file_paths)){
+# Function to extract genetic correlation results from LDSC log file
+extract_ldsc_rg <- function(log_file) {
+  lines <- readLines(log_file)
   
-  files[[i]] <-
-    read_table(
-      file = file_paths[i]
-    )
+  # Find the line with "Summary of Genetic Correlation Results"
+  summary_idx <- grep("Summary of Genetic Correlation Results", lines)
   
+  if (length(summary_idx) == 0) {
+    return(NULL)
+  }
+  
+  # Header is on the line after "Summary of Genetic Correlation Results"
+  header_idx <- summary_idx + 1
+  data_idx <- summary_idx + 2
+  
+  # Check if we have both header and data
+  if (data_idx > length(lines)) {
+    return(NULL)
+  }
+  
+  # Parse header and data
+  header <- strsplit(lines[header_idx], "\\s+")[[1]]
+  data <- strsplit(lines[data_idx], "\\s+")[[1]]
+  
+  # Create data frame
+  df <- as.data.frame(t(data), stringsAsFactors = FALSE)
+  colnames(df) <- header
+  
+  # Convert numeric columns
+  numeric_cols <- c("rg", "se", "z", "p", "h2_obs", "h2_obs_se", "h2_int", "h2_int_se", "gcov_int", "gcov_int_se")
+  for (col in numeric_cols) {
+    if (col %in% colnames(df)) {
+      df[[col]] <- as.numeric(df[[col]])
+    }
+  }
+  
+  return(df)
 }
+
+# Extract results from all log files
+files <- lapply(file_paths, extract_ldsc_rg)
+
+# Remove NULL entries (files without results)
+files <- Filter(Negate(is.null), files)
 
 # extract rg values in matrix
 all_rg <-

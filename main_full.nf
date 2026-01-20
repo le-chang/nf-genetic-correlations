@@ -57,44 +57,44 @@ process FormatSumstats {
 
 process MungeSumstats {
     label 'ldsc'
-
+    
     input:
     tuple path(file), val(sampleN), val(suffixName)
-
+    
     output:
     tuple path("${suffixName}.sumstats.gz"), val(suffixName)
-
+    
     publishDir "${params.output_dir}/munged", mode: 'copy'
-
+    
     script:
     """
-        ldsc munge_sumstats \
-            --sumstats ${file} \
-            --N ${sampleN} \
-            --merge-alleles ${params.hapmap_ref} \
-            --chunksize 500000 \
-            --out ${suffixName}
+    munge_sumstats.py \
+        --sumstats ${file} \
+        --N ${sampleN} \
+        --merge-alleles ${params.hapmap_ref} \
+        --chunksize 500000 \
+        --out ${suffixName}
     """
 }
 
 process RunLDSC_h2 {
     label 'ldsc'
-
+    
     input:
     tuple path(file), val(suffixName)
-
+    
     output:
-    path("ldsc_h2_${suffixName}.h2_results")
-
+    path("ldsc_h2_${suffixName}.log")
+    
     publishDir "${params.output_dir}/ldsc_h2", mode: 'copy'
-
+    
     script:
     """
-        ldsc ldsc h2 \
-            --h2 ${file} \
-            --ref-ld-chr ${params.w_ld_chr} \
-            --w-ld-chr ${params.w_ld_chr} \
-            --out ldsc_h2_${suffixName}
+    ldsc.py \
+        --h2 ${file} \
+        --ref-ld-chr ${params.w_ld_chr}/ \
+        --w-ld-chr ${params.w_ld_chr}/ \
+        --out ldsc_h2_${suffixName}
     """
 }
 
@@ -119,30 +119,29 @@ process PrepRg {
 
 process RunLDSC_rg {
     label 'ldsc'
-
+    
     input:
     tuple path(file1), val(suffix1), path(file2), val(suffix2)
-
+    
     output:
-    path("ldsc_rg_${suffix1}_${suffix2}.rg_results")
-
+    path("ldsc_rg_${suffix1}_${suffix2}.log")
+    
     publishDir "${params.output_dir}/ldsc_rg", mode: 'copy'
-
+    
     script:
     """
-        ldsc ldsc rg \
-            --rg ${file1} \
-            --rg ${file2} \
-            --ref-ld-chr ${params.w_ld_chr} \
-            --w-ld-chr ${params.w_ld_chr} \
-            --out ldsc_rg_${suffix1}_${suffix2}
+    ldsc.py \
+        --rg ${file1},${file2} \
+        --ref-ld-chr ${params.w_ld_chr}/ \
+        --w-ld-chr ${params.w_ld_chr}/ \
+        --out ldsc_rg_${suffix1}_${suffix2}
     """
 }
 
 process PrepLAVA {
-
+    
     input:
-    path rg_dir
+    val rg_dir_ready  // Just use as a signal that rg is complete
     val run_id
 
     output:
@@ -152,15 +151,14 @@ process PrepLAVA {
     publishDir "${params.data_dir}/LAVA", mode: 'copy', pattern: "*.txt"
     publishDir "${params.output_dir}/ldsc_rg", mode: 'copy', pattern: "*_all_rg_results.tsv"
 
-script:
+    script:
     """
     Rscript ${params.bin_dir}/prep_for_LAVA.R \
-        ${metadata_file} \
+        ${params.metadata} \
         ${params.output_dir}/formatted \
-        ${rg_dir} \
+        ${params.output_dir}/ldsc_rg \
         ${run_id}
     """
-
 }
 
 process RunLAVA_1 {
@@ -432,15 +430,8 @@ workflow {
     output_rg = pairs_ch | RunLDSC_rg
 
     // Step 6: Get sample overlap and info files for LAVA
-    all_rg_results_ch = output_rg
-    .collect()
-    .map { it[0] }
-
-    lava_input_ch = all_rg_results_ch
-        .combine(rg_dir_ch)
-        .map { results, rg_dir -> rg_dir }
-
-    prep_lava = PrepLAVA(lava_input_ch, run_id)
+    all_rg_done = output_rg.collect().map { true }
+    prep_lava = PrepLAVA(all_rg_done, run_id)
 
     // Step 7: Run LAVA (10 partitions in parallel)
     lava_data_ch = prep_lava.data_files

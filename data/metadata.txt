@@ -1,4 +1,8 @@
 dataset	filename	N	cases	controls
-AD_2023	35379992-GCST90027158-MONDO_0004975.h.tsv.gz	487511	85934	401577
-ALS_2021	34873335-GCST90027164-MONDO_0004976.h.tsv.gz	138086	27205	110881
-LBD_2021	33589841-GCST90001390-EFO_0006792.h.tsv.gz	6618	2591	4027
+uNaCr_combined	uNaCr_combined.tsv	394639	NA	NA
+uNaCr_female	uNaCr_female.tsv	212539	NA	NA
+uNaCr_male	uNaCr_male.tsv	182099	NA	NA
+AD_kunkle2019	AD_kunkle2019.tsv	94437	35247	59163
+PD_sexcombined	PD_sexcombined.tsv	1437688	37688	1400000
+PD_female	PD_female.tsv	19773	7384	12389
+PD_male	PD_male.tsv	24053	12054	11999
