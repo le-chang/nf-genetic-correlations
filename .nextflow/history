@@ -1,0 +1,1 @@
+2026-01-29 14:52:20	-	hungry_miescher	-	f15dcb665f2bd6eb4d07a4d42f6aaa8a	d03b714f-2fd6-4cce-a6a1-dc8134ff6194	nextflow run main_full.nf -profile beluga -resume --run_id analysis1 --metadata /lustre09/project/6054517/lchang24/github/nf-genetic-correlations/data/metadata.txt --lava_ref UKB

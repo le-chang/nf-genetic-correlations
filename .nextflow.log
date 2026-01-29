@@ -1,0 +1,127 @@
+Jan.-29 14:52:18.839 [main] DEBUG nextflow.cli.Launcher - $> nextflow run main_full.nf -profile beluga -resume --run_id analysis1 --metadata /lustre09/project/6054517/lchang24/github/nf-genetic-correlations/data/metadata.txt --lava_ref UKB
+Jan.-29 14:52:18.997 [main] DEBUG nextflow.cli.CmdRun - N E X T F L O W  ~  version 24.10.2
+Jan.-29 14:52:19.080 [main] DEBUG nextflow.plugin.PluginsFacade - Setting up plugin manager > mode=prod; embedded=false; plugins-dir=/home/lchang24/.nextflow/plugins; core-plugins: nf-amazon@2.9.2,nf-azure@1.10.2,nf-cloudcache@0.4.2,nf-codecommit@0.2.2,nf-console@1.1.4,nf-google@1.15.2,nf-tower@1.9.3,nf-wave@1.7.4
+Jan.-29 14:52:19.140 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Enabled plugins: []
+Jan.-29 14:52:19.142 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Disabled plugins: []
+Jan.-29 14:52:19.145 [main] INFO  org.pf4j.DefaultPluginManager - PF4J version 3.12.0 in 'deployment' mode
+Jan.-29 14:52:19.177 [main] INFO  org.pf4j.AbstractPluginManager - No plugins
+Jan.-29 14:52:19.223 [main] DEBUG nextflow.config.ConfigBuilder - Found config local: /lustre09/project/6054517/lchang24/github/nf-genetic-correlations/nextflow.config
+Jan.-29 14:52:19.226 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /lustre09/project/6054517/lchang24/github/nf-genetic-correlations/nextflow.config
+Jan.-29 14:52:19.280 [main] DEBUG n.secret.LocalSecretsProvider - Secrets store: /home/lchang24/.nextflow/secrets/store.json
+Jan.-29 14:52:19.285 [main] DEBUG nextflow.secret.SecretsLoader - Discovered secrets providers: [nextflow.secret.LocalSecretsProvider@3e6f3bae] - activable => nextflow.secret.LocalSecretsProvider@3e6f3bae
+Jan.-29 14:52:19.318 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `beluga`
+Jan.-29 14:52:20.448 [main] DEBUG nextflow.config.ConfigBuilder - Available config profiles: [narval, beluga]
+Jan.-29 14:52:20.457 [main] WARN  nextflow.config.ConfigBuilder - It appears you have never run this project before -- Option `-resume` is ignored
+Jan.-29 14:52:20.535 [main] DEBUG nextflow.cli.CmdRun - Applied DSL=2 from script declaration
+Jan.-29 14:52:20.562 [main] DEBUG nextflow.cli.CmdRun - Launching `main_full.nf` [hungry_miescher] DSL2 - revision: f15dcb665f
+Jan.-29 14:52:20.563 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins default=[]
+Jan.-29 14:52:20.563 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins resolved requirement=[]
+Jan.-29 14:52:20.642 [main] DEBUG nextflow.Session - Session UUID: d03b714f-2fd6-4cce-a6a1-dc8134ff6194
+Jan.-29 14:52:20.642 [main] DEBUG nextflow.Session - Run name: hungry_miescher
+Jan.-29 14:52:20.642 [main] DEBUG nextflow.Session - Executor pool size: 2
+Jan.-29 14:52:20.657 [main] DEBUG nextflow.file.FilePorter - File porter settings maxRetries=3; maxTransfers=50; pollTimeout=null
+Jan.-29 14:52:20.662 [main] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'FileTransfer' minSize=10; maxSize=10; workQueue=LinkedBlockingQueue[10000]; allowCoreThreadTimeout=false
+Jan.-29 14:52:20.710 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 24.10.2 build 5932
+  Created: 27-11-2024 21:23 UTC (16:23 EDT)
+  System: Linux 5.14.0-611.16.1.el9_7.x86_64
+  Runtime: Groovy 4.0.23 on OpenJDK 64-Bit Server VM 17.0.6+10
+  Encoding: UTF-8 (UTF-8)
+  Process: 992193@rc32119 [10.83.101.19]
+  CPUs: 1 - Mem: 755.4 GB (654.2 GB) - Swap: 0 (0)
+Jan.-29 14:52:20.803 [main] DEBUG nextflow.Session - Work-dir: /lustre09/project/6054517/lchang24/github/nf-genetic-correlations/work [lustre]
+Jan.-29 14:52:20.825 [main] DEBUG nextflow.executor.ExecutorFactory - Extension executors providers=[]
+Jan.-29 14:52:20.858 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
+Jan.-29 14:52:20.902 [main] DEBUG nextflow.cache.CacheFactory - Using Nextflow cache factory: nextflow.cache.DefaultCacheFactory
+Jan.-29 14:52:20.921 [main] DEBUG nextflow.util.CustomThreadPool - Creating default thread pool > poolSize: 2; maxThreads: 1000
+Jan.-29 14:52:21.210 [main] DEBUG nextflow.Session - Session start
+Jan.-29 14:52:23.035 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Jan.-29 14:52:23.342 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: slurm
+Jan.-29 14:52:23.342 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'slurm'
+Jan.-29 14:52:23.362 [main] DEBUG nextflow.executor.Executor - [warm up] executor > slurm
+Jan.-29 14:52:23.376 [main] DEBUG n.processor.TaskPollingMonitor - Creating task monitor for executor 'slurm' > capacity: 100; pollInterval: 1m; dumpInterval: 5m 
+Jan.-29 14:52:23.378 [main] DEBUG n.processor.TaskPollingMonitor - >>> barrier register (monitor: slurm)
+Jan.-29 14:52:23.379 [main] DEBUG n.processor.TaskPollingMonitor - Creating submit rate limit of 60 submissions per 60 seconds
+Jan.-29 14:52:23.407 [main] DEBUG n.executor.AbstractGridExecutor - Creating executor 'slurm' > queue-stat-interval: 1m
+Jan.-29 14:52:23.505 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withLabel:ldsc` matches labels `ldsc` for process with name MungeSumstats
+Jan.-29 14:52:23.513 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: slurm
+Jan.-29 14:52:23.514 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'slurm'
+Jan.-29 14:52:23.533 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withLabel:ldsc` matches labels `ldsc` for process with name RunLDSC_h2
+Jan.-29 14:52:23.536 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: slurm
+Jan.-29 14:52:23.537 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'slurm'
+Jan.-29 14:52:23.588 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: slurm
+Jan.-29 14:52:23.588 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'slurm'
+Jan.-29 14:52:23.606 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withLabel:ldsc` matches labels `ldsc` for process with name RunLDSC_rg
+Jan.-29 14:52:23.610 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: slurm
+Jan.-29 14:52:23.612 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'slurm'
+Jan.-29 14:52:23.696 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: slurm
+Jan.-29 14:52:23.696 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'slurm'
+Jan.-29 14:52:23.717 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withLabel:lava` matches labels `lava` for process with name RunLAVA_1
+Jan.-29 14:52:23.726 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: slurm
+Jan.-29 14:52:23.726 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'slurm'
+Jan.-29 14:52:23.741 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withLabel:lava` matches labels `lava` for process with name RunLAVA_2
+Jan.-29 14:52:23.750 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: slurm
+Jan.-29 14:52:23.750 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'slurm'
+Jan.-29 14:52:23.764 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withLabel:lava` matches labels `lava` for process with name RunLAVA_3
+Jan.-29 14:52:23.768 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: slurm
+Jan.-29 14:52:23.768 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'slurm'
+Jan.-29 14:52:23.788 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withLabel:lava` matches labels `lava` for process with name RunLAVA_4
+Jan.-29 14:52:23.791 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: slurm
+Jan.-29 14:52:23.791 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'slurm'
+Jan.-29 14:52:23.800 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withLabel:lava` matches labels `lava` for process with name RunLAVA_5
+Jan.-29 14:52:23.813 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: slurm
+Jan.-29 14:52:23.813 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'slurm'
+Jan.-29 14:52:23.825 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withLabel:lava` matches labels `lava` for process with name RunLAVA_6
+Jan.-29 14:52:23.827 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: slurm
+Jan.-29 14:52:23.827 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'slurm'
+Jan.-29 14:52:23.846 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withLabel:lava` matches labels `lava` for process with name RunLAVA_7
+Jan.-29 14:52:23.851 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: slurm
+Jan.-29 14:52:23.851 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'slurm'
+Jan.-29 14:52:23.857 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withLabel:lava` matches labels `lava` for process with name RunLAVA_8
+Jan.-29 14:52:23.859 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: slurm
+Jan.-29 14:52:23.859 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'slurm'
+Jan.-29 14:52:23.881 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withLabel:lava` matches labels `lava` for process with name RunLAVA_9
+Jan.-29 14:52:23.882 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: slurm
+Jan.-29 14:52:23.882 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'slurm'
+Jan.-29 14:52:23.888 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withLabel:lava` matches labels `lava` for process with name RunLAVA_10
+Jan.-29 14:52:23.891 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: slurm
+Jan.-29 14:52:23.892 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'slurm'
+Jan.-29 14:52:23.944 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: slurm
+Jan.-29 14:52:23.945 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'slurm'
+Jan.-29 14:52:23.950 [main] DEBUG nextflow.Session - Workflow process names [dsl2]: RunLDSC_rg, PrepLAVA, FormatSumstats, MungeSumstats, RunLAVA_8, RunLAVA_9, RunLAVA_6, RunLAVA_7, RunLAVA_4, RunLAVA_5, RunLAVA_2, MergeLAVA, RunLAVA_3, RunLAVA_1, RunLDSC_h2, PrepRg, RunLAVA_10
+Jan.-29 14:52:23.951 [main] DEBUG nextflow.Session - Igniting dataflow network (19)
+Jan.-29 14:52:23.959 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > FormatSumstats
+Jan.-29 14:52:23.980 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > MungeSumstats
+Jan.-29 14:52:24.002 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RunLDSC_h2
+Jan.-29 14:52:24.002 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > PrepRg
+Jan.-29 14:52:24.011 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RunLDSC_rg
+Jan.-29 14:52:24.011 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > PrepLAVA
+Jan.-29 14:52:24.011 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RunLAVA_1
+Jan.-29 14:52:24.026 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RunLAVA_2
+Jan.-29 14:52:24.026 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RunLAVA_3
+Jan.-29 14:52:24.026 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RunLAVA_4
+Jan.-29 14:52:24.026 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RunLAVA_5
+Jan.-29 14:52:24.036 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RunLAVA_6
+Jan.-29 14:52:24.037 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RunLAVA_7
+Jan.-29 14:52:24.037 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RunLAVA_8
+Jan.-29 14:52:24.037 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RunLAVA_9
+Jan.-29 14:52:24.037 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > RunLAVA_10
+Jan.-29 14:52:24.058 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > MergeLAVA
+Jan.-29 14:52:24.059 [main] DEBUG nextflow.script.ScriptRunner - Parsed script files:
+  Script_e76d737b6dff7783: /lustre09/project/6054517/lchang24/github/nf-genetic-correlations/main_full.nf
+Jan.-29 14:52:24.059 [main] DEBUG nextflow.script.ScriptRunner - > Awaiting termination 
+Jan.-29 14:52:24.059 [main] DEBUG nextflow.Session - Session await
+Jan.-29 14:52:24.313 [Task submitter] DEBUG nextflow.executor.GridTaskHandler - [SLURM] submitted process FormatSumstats (1) > jobId: 5895791; workDir: /lustre09/project/6054517/lchang24/github/nf-genetic-correlations/work/05/72865301e3e3402c474a1502fc4059
+Jan.-29 14:52:24.313 [Task submitter] INFO  nextflow.Session - [05/728653] Submitted process > FormatSumstats (1)
+Jan.-29 14:52:24.495 [Task submitter] DEBUG nextflow.executor.GridTaskHandler - [SLURM] submitted process FormatSumstats (2) > jobId: 5895792; workDir: /lustre09/project/6054517/lchang24/github/nf-genetic-correlations/work/0e/74dafc88fa177071c2e857f7d8fccb
+Jan.-29 14:52:24.496 [Task submitter] INFO  nextflow.Session - [0e/74dafc] Submitted process > FormatSumstats (2)
+Jan.-29 14:52:25.440 [Task submitter] DEBUG nextflow.executor.GridTaskHandler - [SLURM] submitted process FormatSumstats (4) > jobId: 5895793; workDir: /lustre09/project/6054517/lchang24/github/nf-genetic-correlations/work/cd/1bfa74e93934ea27e4546f70e2cd5b
+Jan.-29 14:52:25.440 [Task submitter] INFO  nextflow.Session - [cd/1bfa74] Submitted process > FormatSumstats (4)
+Jan.-29 14:52:26.431 [Task submitter] DEBUG nextflow.executor.GridTaskHandler - [SLURM] submitted process FormatSumstats (3) > jobId: 5895794; workDir: /lustre09/project/6054517/lchang24/github/nf-genetic-correlations/work/15/37f6d1e169ac9255b677fd5dec1666
+Jan.-29 14:52:26.432 [Task submitter] INFO  nextflow.Session - [15/37f6d1] Submitted process > FormatSumstats (3)
+Jan.-29 14:52:27.448 [Task submitter] DEBUG nextflow.executor.GridTaskHandler - [SLURM] submitted process FormatSumstats (6) > jobId: 5895795; workDir: /lustre09/project/6054517/lchang24/github/nf-genetic-correlations/work/a7/2a56e33dbb339b5dc612a04a79c99c
+Jan.-29 14:52:27.448 [Task submitter] INFO  nextflow.Session - [a7/2a56e3] Submitted process > FormatSumstats (6)
+Jan.-29 14:52:28.444 [Task submitter] DEBUG nextflow.executor.GridTaskHandler - [SLURM] submitted process FormatSumstats (5) > jobId: 5895796; workDir: /lustre09/project/6054517/lchang24/github/nf-genetic-correlations/work/8f/2512ffeed253ac97857dbbd74d3cd5
+Jan.-29 14:52:28.444 [Task submitter] INFO  nextflow.Session - [8f/2512ff] Submitted process > FormatSumstats (5)
+Jan.-29 14:52:29.415 [Task submitter] DEBUG nextflow.executor.GridTaskHandler - [SLURM] submitted process FormatSumstats (7) > jobId: 5895798; workDir: /lustre09/project/6054517/lchang24/github/nf-genetic-correlations/work/83/2bbcce6598765d6f5d31982b51b684
+Jan.-29 14:52:29.415 [Task submitter] INFO  nextflow.Session - [83/2bbcce] Submitted process > FormatSumstats (7)

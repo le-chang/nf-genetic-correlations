@@ -1,0 +1,180 @@
+
+ N E X T F L O W   ~  version 24.10.2
+
+WARN: It appears you have never run this project before -- Option `-resume` is ignored
+Launching `main_full.nf` [hungry_miescher] DSL2 - revision: f15dcb665f
+
+[-        ] FormatSumstats -
+[-        ] MungeSumstats  -
+[-        ] RunLDSC_h2     -
+[-        ] PrepRg         -
+[-        ] RunLDSC_rg     -
+
+[-        ] FormatSumstats -
+[-        ] MungeSumstats  -
+[-        ] RunLDSC_h2     -
+[-        ] PrepRg         -
+[-        ] RunLDSC_rg     -
+[-        ] PrepLAVA       -
+[-        ] RunLAVA_1      -
+[-        ] RunLAVA_2      -
+[-        ] RunLAVA_3      -
+[-        ] RunLAVA_4      -
+[-        ] RunLAVA_5      -
+[-        ] RunLAVA_6      -
+[-        ] RunLAVA_7      -
+[-        ] RunLAVA_8      -
+[-        ] RunLAVA_9      -
+[-        ] RunLAVA_10     -
+[-        ] MergeLAVA      -
+
+[-        ] FormatSumstats | 0 of 7
+[-        ] MungeSumstats  -
+[-        ] RunLDSC_h2     -
+[-        ] PrepRg         -
+[-        ] RunLDSC_rg     -
+[-        ] PrepLAVA       -
+[-        ] RunLAVA_1      -
+[-        ] RunLAVA_2      -
+[-        ] RunLAVA_3      -
+[-        ] RunLAVA_4      -
+[-        ] RunLAVA_5      -
+[-        ] RunLAVA_6      -
+[-        ] RunLAVA_7      -
+[-        ] RunLAVA_8      -
+[-        ] RunLAVA_9      -
+[-        ] RunLAVA_10     -
+[-        ] MergeLAVA      -
+
+executor >  slurm (1)
+[05/728653] FormatSumstats (1) | 0 of 7
+[-        ] MungeSumstats      -
+[-        ] RunLDSC_h2         -
+[-        ] PrepRg             -
+[-        ] RunLDSC_rg         -
+[-        ] PrepLAVA           -
+[-        ] RunLAVA_1          -
+[-        ] RunLAVA_2          -
+[-        ] RunLAVA_3          -
+[-        ] RunLAVA_4          -
+[-        ] RunLAVA_5          -
+[-        ] RunLAVA_6          -
+[-        ] RunLAVA_7          -
+[-        ] RunLAVA_8          -
+[-        ] RunLAVA_9          -
+[-        ] RunLAVA_10         -
+[-        ] MergeLAVA          -
+
+executor >  slurm (2)
+[0e/74dafc] FormatSumstats (2) | 0 of 7
+[-        ] MungeSumstats      -
+[-        ] RunLDSC_h2         -
+[-        ] PrepRg             -
+[-        ] RunLDSC_rg         -
+[-        ] PrepLAVA           -
+[-        ] RunLAVA_1          -
+[-        ] RunLAVA_2          -
+[-        ] RunLAVA_3          -
+[-        ] RunLAVA_4          -
+[-        ] RunLAVA_5          -
+[-        ] RunLAVA_6          -
+[-        ] RunLAVA_7          -
+[-        ] RunLAVA_8          -
+[-        ] RunLAVA_9          -
+[-        ] RunLAVA_10         -
+[-        ] MergeLAVA          -
+
+executor >  slurm (3)
+[cd/1bfa74] FormatSumstats (4) | 0 of 7
+[-        ] MungeSumstats      -
+[-        ] RunLDSC_h2         -
+[-        ] PrepRg             -
+[-        ] RunLDSC_rg         -
+[-        ] PrepLAVA           -
+[-        ] RunLAVA_1          -
+[-        ] RunLAVA_2          -
+[-        ] RunLAVA_3          -
+[-        ] RunLAVA_4          -
+[-        ] RunLAVA_5          -
+[-        ] RunLAVA_6          -
+[-        ] RunLAVA_7          -
+[-        ] RunLAVA_8          -
+[-        ] RunLAVA_9          -
+[-        ] RunLAVA_10         -
+[-        ] MergeLAVA          -
+
+executor >  slurm (4)
+[15/37f6d1] FormatSumstats (3) | 0 of 7
+[-        ] MungeSumstats      -
+[-        ] RunLDSC_h2         -
+[-        ] PrepRg             -
+[-        ] RunLDSC_rg         -
+[-        ] PrepLAVA           -
+[-        ] RunLAVA_1          -
+[-        ] RunLAVA_2          -
+[-        ] RunLAVA_3          -
+[-        ] RunLAVA_4          -
+[-        ] RunLAVA_5          -
+[-        ] RunLAVA_6          -
+[-        ] RunLAVA_7          -
+[-        ] RunLAVA_8          -
+[-        ] RunLAVA_9          -
+[-        ] RunLAVA_10         -
+[-        ] MergeLAVA          -
+
+executor >  slurm (5)
+[a7/2a56e3] FormatSumstats (6) | 0 of 7
+[-        ] MungeSumstats      -
+[-        ] RunLDSC_h2         -
+[-        ] PrepRg             -
+[-        ] RunLDSC_rg         -
+[-        ] PrepLAVA           -
+[-        ] RunLAVA_1          -
+[-        ] RunLAVA_2          -
+[-        ] RunLAVA_3          -
+[-        ] RunLAVA_4          -
+[-        ] RunLAVA_5          -
+[-        ] RunLAVA_6          -
+[-        ] RunLAVA_7          -
+[-        ] RunLAVA_8          -
+[-        ] RunLAVA_9          -
+[-        ] RunLAVA_10         -
+[-        ] MergeLAVA          -
+
+executor >  slurm (6)
+[8f/2512ff] FormatSumstats (5) | 0 of 7
+[-        ] MungeSumstats      -
+[-        ] RunLDSC_h2         -
+[-        ] PrepRg             -
+[-        ] RunLDSC_rg         -
+[-        ] PrepLAVA           -
+[-        ] RunLAVA_1          -
+[-        ] RunLAVA_2          -
+[-        ] RunLAVA_3          -
+[-        ] RunLAVA_4          -
+[-        ] RunLAVA_5          -
+[-        ] RunLAVA_6          -
+[-        ] RunLAVA_7          -
+[-        ] RunLAVA_8          -
+[-        ] RunLAVA_9          -
+[-        ] RunLAVA_10         -
+[-        ] MergeLAVA          -
+
+executor >  slurm (7)
+[83/2bbcce] FormatSumstats (7) | 0 of 7
+[-        ] MungeSumstats      -
+[-        ] RunLDSC_h2         -
+[-        ] PrepRg             -
+[-        ] RunLDSC_rg         -
+[-        ] PrepLAVA           -
+[-        ] RunLAVA_1          -
+[-        ] RunLAVA_2          -
+[-        ] RunLAVA_3          -
+[-        ] RunLAVA_4          -
+[-        ] RunLAVA_5          -
+[-        ] RunLAVA_6          -
+[-        ] RunLAVA_7          -
+[-        ] RunLAVA_8          -
+[-        ] RunLAVA_9          -
+[-        ] RunLAVA_10         -
+[-        ] MergeLAVA          -
