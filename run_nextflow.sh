@@ -1,9 +1,9 @@
 #!/bin/bash
-#SBATCH --account=def-xxxxx
+#SBATCH --account=def-gsarah
 #SBATCH --job-name=nextflow_run
 #SBATCH --output=slurm-%x.out
 #SBATCH --error=slurm-%x.err
-#SBATCH --time=12:00:00
+#SBATCH --time=24:00:00
 #SBATCH --mem=20G
 
 module load StdEnv/2023
