@@ -1,2 +1,8 @@
 bin/ldsc_latest.sif
 data/
+.nextflow/
+results/
+work/
+nextflow/
+.nextflow/cache/
+.nextflow/history
