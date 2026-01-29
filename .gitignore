@@ -6,3 +6,7 @@ work/
 nextflow/
 .nextflow/cache/
 .nextflow/history
+.nextflow.log
+*out
+*err
+slurm-nextflow_run.out
